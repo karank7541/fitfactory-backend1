@@ -8,8 +8,6 @@ import authRoutes from "./routes/authRoutes.js";
 import otpRoutes from "./routes/otpRoutes.js";
 import contactRoutes from "./routes/contactRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
-
-// ⭐ NEW FEEDBACK ROUTE
 import feedbackRoutes from "./routes/feedbackRoutes.js";
 
 dotenv.config();
@@ -17,9 +15,8 @@ connectToDb();
 
 const app = express();
 
-// Allow all origins for development
+// Allow all origins
 app.use(cors());
-
 app.use(express.json());
 
 // TEST ROUTE
@@ -34,11 +31,14 @@ app.use("/api/auth", otpRoutes);
 // CONTACT ROUTES
 app.use("/api/contact", contactRoutes);
 
-// ⭐ FEEDBACK ROUTE (User Feedback)
+// FEEDBACK ROUTES
 app.use("/api/feedback", feedbackRoutes);
 
 // ADMIN ROUTES
 app.use("/api/admin", adminRoutes);
 
+// ✔ IMPORTANT FOR RAILWAY
 const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`✔ Server running on ${PORT}`));
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`✔ Server running on ${PORT}`);
+});

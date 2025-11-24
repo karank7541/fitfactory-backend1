@@ -1,17 +1,19 @@
-import nodemailer from "nodemailer";
+// import nodemailer from "nodemailer";
 
 const sendEmail = async (to, subject, message) => {
   try {
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp-relay.brevo.com",
+      port: 587,
+      secure: false,
       auth: {
-        user: process.env.EMAIL_USER,   // your gmail
-        pass: process.env.EMAIL_PASS,   // your app password
+        user: process.env.SMTP_USER,  // Brevo SMTP Login
+        pass: process.env.SMTP_PASS,  // Brevo SMTP Key
       },
     });
 
     const mailOptions = {
-      from: `"FitFactory 🚀" <${process.env.EMAIL_USER}>`,
+      from: `"FitFactory 🚀" <${process.env.SMTP_USER}>`,
       to,
       subject,
       html: `
@@ -24,10 +26,11 @@ const sendEmail = async (to, subject, message) => {
     };
 
     await transporter.sendMail(mailOptions);
-
+    console.log("✔ Email sent successfully!");
     return true;
+
   } catch (error) {
-    console.error("Email sending error:", error);
+    console.error("❌ Email sending error:", error);
     return false;
   }
 };
